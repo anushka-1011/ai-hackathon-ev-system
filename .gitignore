@@ -1,0 +1,17 @@
+# Virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# CatBoost generated files
+catboost_info/
+
+# Temporary scripts
+check_duration.py
+test_waiting_logic.py
+
+
+# Trained models
+models/

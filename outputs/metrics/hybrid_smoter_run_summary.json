@@ -1,0 +1,9 @@
+{
+  "folds": 10,
+  "rows": 110,
+  "best_80_20": {
+    "dataset": "dataset_II_train",
+    "model": "CNN_LSTM",
+    "rmse": 0.379899354691266
+  }
+}

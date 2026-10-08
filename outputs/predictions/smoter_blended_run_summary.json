@@ -1,0 +1,20 @@
+{
+  "selected_training_models": [
+    {
+      "dataset": "dataset_II_train",
+      "model": "CNN_LSTM",
+      "rmse": 0.379899354691266
+    },
+    {
+      "dataset": "dataset_I_SMOTER_train",
+      "model": "CNN_LSTM",
+      "rmse": 0.4287129667463478
+    }
+  ],
+  "weights": [
+    0.530183569283422,
+    0.4698164307165781
+  ],
+  "output_rows": 129024,
+  "output_file": "C:\\Users\\msi 1\\Documents\\ai-hackathon-ev-system\\outputs\\predictions\\smoter_blended_station_predictions.csv"
+}

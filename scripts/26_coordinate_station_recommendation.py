@@ -17,7 +17,7 @@ from backend.site_optimizer import optimize_site
 from backend.station_allocation import allocate_station_load
 
 PREDICTIONS_FILE = (
-    BASE_DIR / "outputs" / "predictions" / "hybrid_station_predictions.csv"
+    BASE_DIR / "outputs" / "predictions" / "smoter_blended_station_predictions.csv"
 )
 
 
@@ -93,10 +93,16 @@ def main() -> None:
         if "selected_model" in selected and selected["selected_model"].notna().any()
         else "unknown"
     )
+    source_models = {
+        column: str(selected[column].dropna().iloc[0])
+        for column in ["smoter_model", "non_smoter_model"]
+        if column in selected and selected[column].notna().any()
+    }
     result = {
         "requested_timestamp": str(requested),
         "prediction_timestamp_used": str(used_timestamp),
         "selected_model": selected_model,
+        **source_models,
         "input_latitude": arguments.latitude,
         "input_longitude": arguments.longitude,
         "site_recommendation": site_recommendation,

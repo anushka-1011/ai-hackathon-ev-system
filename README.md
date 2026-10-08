@@ -80,3 +80,40 @@ python scripts/28_visualize_behavior_clusters.py
 ```
 
 The PCA scatter plot is saved as `outputs/behavior/behavior_clusters_pca.png`.
+
+## SMOTER and non-SMOTER hybrid comparison
+
+Evaluate all five hybrids on both prepared training variants with:
+
+```text
+python scripts/29_hybrid_smoter_comparison.py
+```
+
+This evaluates `dataset_I_SMOTER_train.csv` and `dataset_II_train.csv` using
+the untouched `test.csv` holdout and 10-fold validation. Dataset I is the
+SMOTER-balanced training set; Dataset II is the non-SMOTER training set.
+Because SMOTER rows are synthetic and do not retain real timestamps, this
+comparison uses row-based folds and labels that protocol explicitly.
+
+Results are saved to:
+
+- `outputs/metrics/hybrid_smoter_comparison.csv`
+- `outputs/metrics/hybrid_smoter_summary.csv`
+- `outputs/metrics/hybrid_smoter_run_summary.json`
+
+## Blended deployment predictions
+
+To make both training regimes influence coordinate recommendations, build the
+deployment prediction file with:
+
+```text
+python scripts/30_build_blended_deployment_predictions.py
+```
+
+This selects the best 80/20 hybrid separately for Dataset I and Dataset II,
+fits each selected hybrid on its complete training dataset, and blends their
+test predictions using inverse-RMSE weights. The coordinate recommender uses
+this blended file by default:
+
+- `outputs/predictions/smoter_blended_station_predictions.csv`
+- `outputs/predictions/smoter_blended_run_summary.json`

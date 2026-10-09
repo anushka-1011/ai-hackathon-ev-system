@@ -22,6 +22,13 @@ TEST_PATH = os.path.join(
     "test.csv"
 )
 
+BEHAVIOR_SUMMARY_PATH = os.path.join(
+    BASE_DIR,
+    "data",
+    "processed",
+    "behavior",
+    "behavior_cluster_summary.csv"
+)
 MODEL_DIR = os.path.join(
     BASE_DIR,
     "models"
@@ -307,7 +314,121 @@ print(
     f"{maximum_wait:.0f} minutes"
 )
 
+# ============================================================
+# BEHAVIOR-AWARE REQUEST CONTEXT
+# ============================================================
 
+print("\n" + "=" * 70)
+print("CHARGING BEHAVIOR CONTEXT")
+print("=" * 70)
+
+request_hour = prediction_timestamp.hour
+request_weekday = prediction_timestamp.weekday()
+
+is_weekend_request = request_weekday >= 5
+
+is_peak_hour_request = (
+    (7 <= request_hour < 10)
+    or
+    (17 <= request_hour < 21)
+)
+
+# Based on the historical charging behavior analysis:
+#
+# Cluster 0:
+# Frequent Peak-Hour Users
+#
+# Cluster 1:
+# High-Energy Long-Duration Users
+#
+# Cluster 2:
+# Occasional Short-Duration Users
+#
+# Cluster 3:
+# Weekend Users
+#
+# These are used only as behavioral context for allocation.
+# They are NOT treated as a predicted K-Means cluster.
+
+if is_weekend_request:
+    behavior_context = "Weekend Charging Pattern"
+
+elif energy_required >= 20:
+    behavior_context = "High-Energy Charging Pattern"
+
+elif is_peak_hour_request:
+    behavior_context = "Peak-Hour Charging Pattern"
+
+else:
+    behavior_context = "Occasional/Short-Duration Pattern"
+
+print(
+    f"\nArrival hour: {request_hour:02d}:00"
+)
+
+print(
+    f"Weekend request: "
+    f"{'Yes' if is_weekend_request else 'No'}"
+)
+
+print(
+    f"Peak-hour request: "
+    f"{'Yes' if is_peak_hour_request else 'No'}"
+)
+
+print(
+    f"Energy requested: "
+    f"{energy_required:.2f} kWh"
+)
+
+print(
+    f"Behavior context: "
+    f"{behavior_context}"
+)
+
+
+
+# ============================================================
+# HISTORICAL CHARGING-BEHAVIOR SEGMENTATION
+# ============================================================
+
+print("\n" + "=" * 70)
+print("HISTORICAL CHARGING-BEHAVIOR SEGMENTATION")
+print("=" * 70)
+
+if os.path.exists(BEHAVIOR_SUMMARY_PATH):
+    behavior_summary = pd.read_csv(BEHAVIOR_SUMMARY_PATH)
+
+    behavior_labels = {
+        0: "Frequent Peak-Hour Users",
+        1: "High-Energy Long-Duration Users",
+        2: "Occasional Short-Duration Users",
+        3: "Weekend Users"
+    }
+
+    print("\nHistorical ACN-Data user behavior clusters:")
+    print("-" * 70)
+
+    for _, row in behavior_summary.iterrows():
+        cluster_id = int(row["cluster"])
+        label = behavior_labels.get(
+            cluster_id, f"Cluster {cluster_id}"
+        )
+
+        print(
+            f"{label}: {int(row['user_count'])} users "
+            f"({row['user_percentage']:.2f}%)"
+        )
+
+    print(
+        "\nThese segments were identified from historical "
+        "ACN-Data users."
+    )
+else:
+    print(
+        "\nHistorical behavior summary could not be found at:"
+    )
+    print(BEHAVIOR_SUMMARY_PATH)
 # ============================================================
 # FIND TIMESTAMP
 # ============================================================

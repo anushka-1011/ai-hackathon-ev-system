@@ -1,0 +1,5 @@
+cluster,user_count,session_count,avg_session_duration_min,avg_energy_kwh,avg_arrival_hour,peak_hour_percentage,weekend_percentage,user_percentage
+0,135,20.489,488.822,10.068,8.439,57.991,1.519,36.89
+1,59,11.051,512.991,33.108,9.406,51.894,3.504,16.12
+2,143,8.72,228.12,9.744,13.864,26.974,3.866,39.07
+3,29,3.966,293.931,13.355,13.998,50.364,83.597,7.92

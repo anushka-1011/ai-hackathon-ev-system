@@ -88,7 +88,7 @@ print("Columns:", len(complete.columns))
 print(complete.columns.tolist())
 
 print(
-    "\n⚠️ This script is configured to create:",
+    "\nThis script is configured to create:",
     OUTPUT_FILE
 )
 

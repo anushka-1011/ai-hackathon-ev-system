@@ -25,7 +25,7 @@ TRAIN_PATH = os.path.join(
     "data",
     "processed",
     "ml",
-    "train_base.csv"
+    "ev_ml_dataset.csv"
 )
 
 OUTPUT_DIR = os.path.join(
@@ -53,10 +53,10 @@ os.makedirs(
 
 
 # ============================================================
-# LOAD 80% TRAINING DATA
+# LOAD FULL DATA
 # ============================================================
 
-print("\nLoading 80% training data...")
+print("\nLoading full data...")
 
 df = pd.read_csv(
     TRAIN_PATH
@@ -209,19 +209,19 @@ def create_models():
         ),
 
         "RandomForest": RandomForestRegressor(
-            n_estimators=200,
-            max_depth=None,
+            n_estimators=100,
+            max_depth=25,
             min_samples_split=2,
             random_state=42,
-            n_jobs=-1
+            n_jobs=2
         ),
 
         "ExtraTrees": ExtraTreesRegressor(
-            n_estimators=200,
-            max_depth=None,
+            n_estimators=100,
+            max_depth=25,
             min_samples_split=2,
             random_state=42,
-            n_jobs=-1
+            n_jobs=2
         )
     }
 

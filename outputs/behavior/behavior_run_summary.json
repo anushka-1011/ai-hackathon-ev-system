@@ -1,0 +1,15 @@
+{
+  "weather_features": [
+    "temperature_2m",
+    "relative_humidity_2m",
+    "precipitation",
+    "weather_code"
+  ],
+  "price_features": [
+    "electricity_price",
+    "price_imputed"
+  ],
+  "weather_price_rows": 165,
+  "segmented_users": 366,
+  "clusters": 4
+}

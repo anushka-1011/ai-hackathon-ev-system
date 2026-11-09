@@ -21,6 +21,10 @@ SITE_AVG_SESSION_MINUTES = {
     "office001": 356.83,
 }
 
+# Keep demand optimization local; the three project sites are geographically
+# separated and a distant low-demand site is not a practical recommendation.
+MAX_LOCAL_RECOMMENDATION_RADIUS_KM = 50.0
+
 
 def haversine_distance_km(lat1, lon1, lat2, lon2):
     """Calculate distance between two GPS coordinates in km."""
@@ -301,9 +305,19 @@ def optimize_site(
     # 5. Prefer sites within user's maximum wait
     # ---------------------------------------------------------
 
+    nearest_distance = results["distance_km"].min()
+    local_radius = max(
+        MAX_LOCAL_RECOMMENDATION_RADIUS_KM,
+        (nearest_distance * 3) + 25.0,
+    )
+    local_sites = results[results["distance_km"] <= local_radius]
+
     feasible_sites = results[
         results["wait_constraint"]
     ].copy()
+    feasible_sites = feasible_sites[
+        feasible_sites["site_name"].isin(local_sites["site_name"])
+    ]
 
     if len(feasible_sites) > 0:
 

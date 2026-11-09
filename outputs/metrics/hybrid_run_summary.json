@@ -1,0 +1,7 @@
+{
+  "best_holdout_model": "GNN_LSTM_TRANSFORMER",
+  "train_rows": 515984,
+  "test_rows": 129024,
+  "folds": 10,
+  "elapsed_seconds": 514.04
+}
